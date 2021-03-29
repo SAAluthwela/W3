@@ -1,4 +1,11 @@
-<?php 
+<?php
+	session_start();
+
+	if(!isset($_SESSION['u_id'],$_SESSION['r_id']))
+		{
+			header('location:index.php?lmsg=true');
+			exit;
+	  }
 	require_once('./../../controller/user/employeeController.php');
 	if (isset($_GET['updateid'])) {
 		$emp = new Employee();
@@ -9,7 +16,7 @@
 	require_once('../../controller/user/userController.php');
 	include_once('header.php');
 ?>
-<!--Body starts  -->
+<!--Body starts here -->
 <div class="container">
     <div class="row">
 		<div class="col-7">

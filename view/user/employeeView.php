@@ -1,5 +1,12 @@
 <?php 
 //controller calling
+session_start();
+
+if(!isset($_SESSION['u_id'],$_SESSION['r_id']))
+	{
+		header('location:index.php?lmsg=true');
+		exit;
+  }
 require_once('../../controller/user/userController.php');
 require_once('./../../controller/user/employeeController.php');
 //employee object
@@ -40,7 +47,7 @@ $result = $employee->getAllEmployee();
                 <td data-label="Action">
                 <!-- notation ? parameter = value  -->
                 <a class="btn btn-warning" href="./employeeUpdate.php?updateid=<?php echo $row["emp_id"]; ?>">&#x270E</a>
-                <a class="btn btn-danger" href="./../../controller/user/employeeController.php?deleteid=<?php echo $row["nic"]; ?>">&#x2718</a>
+                <a class="btn btn-danger" href="./../../controller/user/employeeController.php?deleteid=<?php echo $row["nic"]; ?>">&#x2716</a>
                 </td>
             </tr>
         </tbody>
@@ -68,8 +75,8 @@ $result = $employee->getAllEmployee();
             <label for="emp_name" class="form-label">Name</label>
         </div>
         <div class="form-group field">
-            <input type="text" class="form-field" name="emp_dob" id="emp_dob">
-            <label for="emp_dob" class="form-label">DOB</label>
+          <input class="form-field" id="emp_dob" name="emp_dob" type="date">
+          <label for="emp_dob" class="form-label">DOB</label>
         </div>
 
         <div class="form-group field">

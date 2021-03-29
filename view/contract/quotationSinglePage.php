@@ -3,56 +3,63 @@
     require_once('./../../controller/user/userController.php'); 
     require_once('./header.php');
     require_once('./../../controller/contract/quotationController.php');
-    $result;
+    
+    if (isset($_GET['q_id'])) {
+        $_SESSION['quotation_id'] = $_GET['q_id'];
+        $quo = new Quotation();
+        $quo_details = $quo->getSingleQuotation($_SESSION['quotation_id']);
+        $row = mysqli_fetch_array($quo_details);
+    }
+    
+    if(isset($_POST['update_quotation'])){
+        $quo = new Quotation();
+        $quo->updateQuotation($_SESSION['quotation_id'],$_POST['q_item'],$_POST['q_name'],$_POST['q_desc'],
+        $_POST['q_budget'],$_POST['q_discount']);
+    }
+    if(isset($_GET['del_id'])){
+        //echo "success";
+        //echo $_GET['con_id'];
+        $quo = new Quotation();
+        $quo->deleteQuotation($_GET['del_id'],$_GET['con_id']);
+    }
 ?>
 
 <div class="container">
-    <h2>Quotation Single Page</h2>
-    <h6>Items that are viable for the quotation and other quotation details</h6>
+    <h2>Update Quotation Details</h2>
+    <h6>apply necessay changes applied to the quotation</h6>
 </div>
 <div class="container">
-    <h3>Quotation Details</h3>
-    <h3>Item Details</h3>
-    <table>  
-        <thead>
-            <th>Item ID</th>
-            <th>Name</th>  
-            <th>Description</th>
-            <th>Price</th>
-            <th>Action</th>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-label="Item ID"><i>Item ID</i></td>
-            <td data-label="Name"><i>Name</i></td>
-            <td data-label="Description"><i>Description</i></td>
-            <td data-label="Price"><i>Price</i></td>
-            <td data-label="Action"><i>Action</i></td>
-          </tr>
-        </tbody>
-    </table>
-
+    <h5></h5>
     </br>
-    <h2>Add New Item</h2>
     <div class="container">
         <div class="row">
             <div class="col-7">
-                <form method="post" action="./../../controller/user/employeeController.php">
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF']?>">
+                    <input type="hidden" name="q_item" value="<?php echo $row['q_item'];?>">
                     <div class="form-group field">
-                        <input type="text" class="form-field" name="emp_nic" id="itemName">
-                        <label for="itemName" class="form-label">Item Name</label>
+                        <input type="text" class="form-field" name="q_name" id="itemName" value="<?php echo $row['q_name'];?>">
+                        <label for="itemName" class="form-label">Quotation Name</label>
+                    </div>
+                    
+                    <div class="form-group field">
+                        <input type="text" class="form-field" name="q_desc" id="itemDesc" value="<?php echo $row['q_desc'];?>">
+                        <label for="itemDesc" class="form-label">Quoatation Description</label>
                     </div>
                     <div class="form-group field">
-                        <input type="text" class="form-field" name="emp_name" id="itemDesc">
-                        <label for="itemDesc" class="form-label">Item Description</label>
+                        <input type="text" class="form-field" name="q_budget" id="itemPrice" value="<?php echo $row['q_budget'];?>">
+                        <label for="itemPrice" class="form-label">Budget</label>
                     </div>
                     <div class="form-group field">
-                        <input type="text" class="form-field" name="emp_dob" id="itemPrice">
-                        <label for="itemPrice" class="form-label">Item Price</label>
+                        <input type="text" class="form-field" name="q_budget" id="itemPrice" value="<?php echo $row['q_quantity'];?>">
+                        <label for="itemPrice" class="form-label">Quantity</label>
+                    </div>
+                    <div class="form-group field">
+                        <input type="text" class="form-field" name="q_discount" id="itemPrice" value="<?php echo $row['q_discount'];?>">
+                        <label for="itemPrice" class="form-label">Discount</label>
                     </div>
                     <br>
                     <div class="right">
-                        <input type="submit" name="empDetails" value="Add Item" class="btn btn-primary">
+                        <input type="submit" value="Update Quotation" name="update_quotation" class="btn btn-warning">
                     </div>
                 </form>
             </div>

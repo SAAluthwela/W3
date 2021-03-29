@@ -34,6 +34,15 @@
           <input type="text" id="supAddress" name="supAddress" class="form-field">
           <label for="supAddress" class="form-label">Address</label>
       </div>
+      <div class="form-group field">
+          <select class="form-field" id="supplierCat" name="supplierCat">
+            <option value="" selected disabled>Select from list</option>
+            <option value="1">Raw Materials</option>
+            <option value="2">Tools</option>
+            <option value="0">Both</option>
+          </select>
+          <label for="supplierCat" class="form-label">Category</label>
+        </div>
       <div class="right">
           <input type="submit" class="btn btn-primary" value="Add Supplier" name="addSupplier">
       </div>
@@ -41,42 +50,16 @@
 </div>
 <br>
 <div class="container">
-  <h2>Active Suppliers</h2>
-  <div class="row">
-		<div class="col">
-			<div class="left">
-				<span>Show: </span>
-				<select name="" id="" class="" width="15px">
-					<option value="">10 records</option>
-					<option value="">25 records</option>
-					<option value="">50 records</option>
-					<option value="">100 records</option>
-				</select>
-			</div>
-		</div>
-		<div class="col">
-			<div class="right">
-				<span>Sort By: </span>
-				<select name="" id="">
-					<option value="">Name</option>
-					<option value="">Status</option>
-					<option value="">Added Date</option>
-				</select>
-				<select name="" id="">
-					<option value="">ASC</option>
-					<option value="">DESC</option>
-				</select>
-			</div>
-		</div>
-	</div>
-  <br>
-  <table>
+  <h2>Current Suppliers</h2>
+ 
+  <table class="data-table paginated">
     <thead>
       <tr>
         <th width="20%">Name</th>
         <th width="20%">Email</th>
         <th width="10%">Telephone</th>
         <th width="25%">Address</th>
+        <th>Category</th>
       </tr>
     </thead>
     <tbody>
@@ -89,6 +72,13 @@
         <td data-label="Email"><?php echo $row["sup-email"]; ?></td>
         <td data-label="Telephone"><?php echo $row["sup-mobile"]; ?></td>
         <td data-label="Address"><?php echo $row["sup-address"]; ?></td>
+        <td data-label="Category"><?php if ($row["category"] == 0) {
+															echo "Both";
+														} else if ($row["category"] == 1) {
+															echo "Raw Material";
+														} else if ($row["category"] == 2) {
+															echo "Tool";
+														} ?></td>
       </tr>
       <?php
           $i++;
@@ -100,6 +90,35 @@
     </tbody>
   </table>
 </div>
+
+<script>
+	$('table.paginated').each(function () {
+        var currentPage = 0;
+        var numPerPage = 5; // number of items 
+        var $table = $(this);
+        //var $tableBd = $(this).find("tbody");
+
+        $table.bind('repaginate', function () {
+            $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+        });
+        $table.trigger('repaginate');
+        var numRows = $table.find('tbody tr').length;
+        var numPages = Math.ceil(numRows / numPerPage);
+        var $pager = $('<div class="pager"></div>');
+        for (var page = 0; page < numPages; page++) {
+            $('<span class="page-number"></span>').text(page + 1).bind('click', {
+                newPage: page
+            }, function (event) {
+                currentPage = event.data['newPage'];
+                $table.trigger('repaginate');
+                $(this).addClass('active').siblings().removeClass('active');
+            }).appendTo($pager).addClass('clickable');
+        }
+        if (numRows > numPerPage) {
+            $pager.insertAfter($table).find('span.page-number:first').addClass('active');
+        }
+    });
+</script>
 
 <?php
   require_once('leftSidebar.php'); 

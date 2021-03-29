@@ -1,16 +1,25 @@
-<?php require_once('./../../controller/user/userController.php');?> 
+<?php 
+session_start();
+if(!isset($_SESSION['u_id'],$_SESSION['r_id']))
+{
+  header('location:index.php?lmsg=true');
+  exit;
+}		
+require_once('./../../controller/user/userController.php');
+include_once('header.php');
+?> 
 
 <?php
+
 $result = getAll();
 ?>
-<?php include_once('header.php'); ?>
 
 <div class="container">
 <?php
 if (mysqli_num_rows($result) > 0) {
 ?>
 <div class="container"> 
-  <h3>System Users</h3>
+  <h2>System Users</h2>
   <table class="data-table">
     <thead>
       <tr>
@@ -22,6 +31,7 @@ if (mysqli_num_rows($result) > 0) {
         <th>Action </th>
       </tr>
     </thead>
+    <!-- get details -->
     <?php
       $i=0;
       while($row = mysqli_fetch_array($result)) {
@@ -34,8 +44,8 @@ if (mysqli_num_rows($result) > 0) {
           <td data-label="Last Name"><?php echo $row["u_lastname"]; ?></td>
           <td data-label="Email"><?php echo $row["u_email"]; ?></td>
           <td data-label="Action">
-            <a class="btn btn-warning" href="./userUpdate.php?updateid=<?php echo $row["u_id"]; ?>">Update</a>
-            <a class="btn btn-danger" href="./../../controller/user/userController.php?userid=<?php echo $row["u_id"]; ?>">Delete</a>  
+            <a class="btn btn-warning" href="./userUpdate.php?updateid=<?php echo $row["u_id"]; ?>">&#x270E</a>
+            <a class="btn btn-danger" href="./../../controller/user/userController.php?userid=<?php echo $row["u_id"]; ?>">&#x2716</a>  
           </td>
       </tr>
     <?php
@@ -60,7 +70,7 @@ if (mysqli_num_rows($result) > 0) {
       <div class="col-sm"></div>
     </div>
   </div>
-
+  <!-- add new user -->
   <h2>Create New User Account</h2>
   <h6><strong>Notice : </strong>Making a user account allow to use the system in order to add/update/delete/search in certain user role are providing</h6>
   <form method="post" action="./../../controller/user/userController.php">
