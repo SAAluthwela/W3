@@ -21,7 +21,7 @@ $result = $employee->getAllEmployee();
     <table>
         <thead>
             <tr>
-                <th>Employee ID</th>
+                <th>Emp ID</th>
                 <th>NIC</th>  
                 <th>Name</th>
                 <th>DOB</th>
@@ -37,7 +37,7 @@ $result = $employee->getAllEmployee();
         ?>
         <tbody>
             <tr>
-                <td data-label="Employee ID"><?php echo $row["emp_id"]; ?></td>
+                <td data-label="EmpID"><?php echo $row["emp_id"]; ?></td>
                 <td data-label="NIC"><?php echo $row["nic"]; ?></td>
                 <td data-label="Name"><?php echo $row["emp_name"]; ?></td>
                 <td data-label="DOB"><?php echo $row["dob"]; ?></td>
@@ -47,7 +47,8 @@ $result = $employee->getAllEmployee();
                 <td data-label="Action">
                 <!-- notation ? parameter = value  -->
                 <a class="btn btn-warning" href="./employeeUpdate.php?updateid=<?php echo $row["emp_id"]; ?>">&#x270E</a>
-                <a class="btn btn-danger" href="./../../controller/user/employeeController.php?deleteid=<?php echo $row["nic"]; ?>">&#x2716</a>
+                <!-- delete has disabled due to restrict issues -->
+                <!-- <a class="btn btn-danger" href="./../../controller/user/employeeController.php?deleteid=<?php echo $row["nic"]; ?>">&#x2716</a> -->
                 </td>
             </tr>
         </tbody>
@@ -106,8 +107,7 @@ $result = $employee->getAllEmployee();
 	</form>
     </div>
     </div>
-    </div>
-    
+    </div>  
 </div>
 
 <?php

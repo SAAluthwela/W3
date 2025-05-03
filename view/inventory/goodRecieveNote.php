@@ -22,9 +22,21 @@ $delivery = $_SESSION['replenishDelivery'];
 
 $supplierResult = $supplier->getSupplier($supplierID);
 $supplierDetails = mysqli_fetch_array($supplierResult);
+
+if(isset($_POST['goodrn'])){
+      //$to_email = $_POST['supemail'];
+      $to_email = "udaraweerasinghe968@gmail.com";
+			$subject = "Good Receive Note";
+			$body =  "<h1>Good Recieve Note</h1>";
+			$headers = "From: w3contracts@gmail.com";
+			
+			$sendMail = mail($to_email, $subject, $body, $headers);
+}
+
 ?>
 
-<div class="container center" style="border: 1px solid; padding-right:2.5rem;">
+
+<div id="grn" class="container center" style="border: 1px solid; padding-right:2.5rem;">
   <p>
     <i>W3 Contracts - Willorawatte, Moratuwa</i>
     <br><i>011-2265748 / 071-2554698</i>
@@ -122,10 +134,16 @@ $supplierDetails = mysqli_fetch_array($supplierResult);
 
 </div>
 <br>
+<div id="editor"></div>
 <div class="center">
-  <button class="btn btn-primary">Send as email</button>
-  <button class="btn btn-primary">Download PDF</button>
+ <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+  <input type="hidden" name="supemail" value="<?php echo $supplierDetails['sup-email'] ?>"> 
+  <button type="submit" name="goodrn" class="btn btn-primary">Send as email</button>
+ </form>
+  
+  <button id="downloadPDF" class="btn btn-primary">Download PDF</button>
 </div>
+
 <?php
 require_once('leftSidebar.php');
 require_once('footer.php');
